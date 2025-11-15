@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.bx-shdw {
+  box-shadow: 5px 5px 10px 5px rgb(67, 67, 67);
+}
+
+.brdr-50 {
+  border-radius: 50%;
+}
