@@ -5,10 +5,36 @@ import { useRouter } from 'next/navigation'
 const TicketForm = () => {
   const router = useRouter()
 
-  const [name, setName] = useState<string>("")
-  const [email, setEmail] = useState<string>("")
-  const [date, setDate] = useState<Date>()
+  const [name, setName] = useState<string>()
+  const [email, setEmail] = useState<string>()
+  const [date, setDate] = useState<Date | null>(null)
   const [time, setTime] = useState<string>()
+  const [event, setEvent] = useState<string>()
+  
+  const onClearInput = () => {
+    setName("")
+    setEmail("")
+    setEvent("")
+    setTime("")
+    setDate(null)
+  }
+
+  const generateRandomId = (min=27, max=30) => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    
+    const randLength = Math.floor(Math.random() * (max - min + 1)) + min
+    
+    let result = ""
+    
+    for(let i = 0; i < randLength; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    
+    return result
+  }
+  
+  // ID
+  const [id] = useState(() => generateRandomId())
 
   const handleDateChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -19,13 +45,36 @@ const TicketForm = () => {
     router.push('/')
   }
 
-  const handleSubmit = () => {
-    alert('Ticket submitted!')
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const formattedDate = date ? date.toISOString().split('T')[0] : null
+
+    const data = {
+      event,
+      date: formattedDate,
+      time,
+      name,
+      email,
+      id,
+    }
+
+    const response = await fetch('/api/handler', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data) 
+    })
+
+    const result = await response.json()
+    alert(result.message)
+
+    onClearInput()
   }
   
   return (
     <form 
-      className='p-10 rounded-2xl bx-shdw flex flex-col justify-center gap-8 w-2/5'
+      className='p-10 rounded-2xl bx-shdw flex flex-col justify-center gap-8 w-2/5 text-black'
       onSubmit={handleSubmit}  
     >
       <div className='flex gap-10 items-center'>
@@ -60,19 +109,24 @@ const TicketForm = () => {
         />
       </div>
       <div className='flex w-full'>
-        <select className='px-2 py-1 border border-solid border-gray-800 flex justify-center rounded-sm'>
-          <option value="0">Select Event</option>
-          <option value="1">Software Engineering</option>
-          <option value="2">The Data stuff</option>
-          <option value="3">Low level engineering</option>
-          <option value="4">Full stack web development</option>
-          <option value="5">Cybersecurity</option>
+        <select 
+          className='px-2 py-1 border border-solid border-gray-800 flex justify-center rounded-sm'
+          value={event}
+          onChange={(e) => setEvent(e.target.value)}
+        >
+          <option value="null">Select Event</option>
+          <option value="software engineering">Software Engineering</option>
+          <option value="data stuff">The Data stuff</option>
+          <option value="low level engineering">Low level engineering</option>
+          <option value="full stack web development">Full stack web development</option>
+          <option value="cybersecurity">Cybersecurity</option>
         </select>
       </div>
       <div className='flex flex-col gap-1'>
         <label className='font-bold'>Choose Date</label>
         <input 
           type='date'
+          value={date ? date.toISOString().split('T')[0] : ''}
           onChange={handleDateChange} 
           required
           className='border border-solid border-gray-800 py-0.5 px-2 rounded-sm'
