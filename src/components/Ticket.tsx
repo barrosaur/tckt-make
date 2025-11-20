@@ -8,10 +8,11 @@ export interface TicketProps {
   time: string,
   name: string,
   email: string,
-  id: string
+  id: string,
+  onDelete: () => void
 }
 
-const Ticket = ({ eventName, date, time, name, email, id } : TicketProps) => {
+const Ticket = ({ eventName, date, time, name, email, id, onDelete } : TicketProps) => {
   const size = 30;
 
   return (
@@ -30,7 +31,10 @@ const Ticket = ({ eventName, date, time, name, email, id } : TicketProps) => {
         <h5 className='mrtb-20-3 text-sm text-gray-500'>{id}</h5>
       </div>  
       <div className='flex items-center justify-center'>
-        <button className='flex items-center justify-center cursor-pointer group'>
+        <button 
+          className='flex items-center justify-center cursor-pointer group'
+          onClick={onDelete}
+        >
           <Image
             width={size}
             height={size}

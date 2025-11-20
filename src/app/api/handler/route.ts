@@ -1,3 +1,4 @@
+import { NextRequest } from 'next/server'
 import { db } from '../db'
 
 export async function POST(req) {
@@ -56,6 +57,28 @@ export async function GET() {
     console.error("Error retrieving data: ", err);
     return new Response(
       JSON.stringify({ message: 'Data retrieval error', status: 500 })
+    )
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+
+    const { searchParams } = new URL(req.url)
+    const id = searchParams.get('id')
+
+    const query = `DELETE FROM ticket WHERE id = ?`
+    const [result] = await db.query(query, [id])
+
+    return new Response(
+      JSON.stringify({ message: 'OK'}),
+      { status: 200 }
+    )
+
+  } catch (err) {
+    console.error("Error delete: ", err);
+    return new Response(
+      JSON.stringify({ message: 'Data remove error', status: 500 })
     )
   }
 }

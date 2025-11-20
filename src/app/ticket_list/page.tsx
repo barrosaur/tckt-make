@@ -26,6 +26,21 @@ const TicketListPage = () => {
 
   }, [])
 
+  const handleDelete = async (id: string) => {
+    try {
+
+      const res = await fetch(`/api/handler?id=${id}`, {
+        method: 'DELETE'
+      })
+
+      setTcktList((prev) => prev.filter(tcktList => tcktList.id !== id))
+      alert('Delete Successful')
+
+    } catch (err) {
+      alert(`Error deleting ${id}: ${err}`)
+    }
+  }
+
   return (
     <div className='bg-white w-full h-full flex flex-col justify-center p-10 gap-8'>
       {tcktList.map((t) => (
@@ -37,6 +52,7 @@ const TicketListPage = () => {
           time={t.time}
           email={t.email}
           id={t.id}
+          onDelete={() => handleDelete(t.id)}
         />
       ))}
     </div>
