@@ -1,12 +1,14 @@
 'use client'
 import React, { useState } from "react";
 import TicketForm from "@/components/TicketForm";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const buttonStyle = "cursor-pointer px-10 py-5 text-white\
   rounded-md font-bold text-2xl outline-none bg-blue-700 hover:bg-blue-800 w-75"
 
   const [form, setForm] = useState<boolean>(false)
+  const router = useRouter()
 
   return (
     <div className="flex justify-center items-center w-full h-screen bg-white gap-10 text-background">
@@ -21,6 +23,7 @@ export default function Home() {
           </button>
           <button
             className={buttonStyle}
+            onClick={() => router.push('/ticket_list')}
           >Ticket List</button>
         </>
       )}

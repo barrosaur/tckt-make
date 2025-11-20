@@ -1,7 +1,8 @@
-import React from 'react'
+'use client';
+import React   from 'react'
 import Image from 'next/image'
 
-interface TicketProps {
+export interface TicketProps {
   eventName: string,
   date: Date,
   time: string,
@@ -16,7 +17,7 @@ const Ticket = ({ eventName, date, time, name, email, id } : TicketProps) => {
   return (
     <div className='p-5 rounded-2xl bx-shdw flex'>
       <div className='flex flex-col flex-1'>
-        <h1 className='font-bold text-5xl'>{eventName}</h1>
+        <h1 className='font-bold text-2xl'>{eventName}</h1>
         <div className='flex gap-10'>
           {/* remember this will throw an error if you dont put anything */}
           <h3>{date.toLocaleDateString()}</h3>

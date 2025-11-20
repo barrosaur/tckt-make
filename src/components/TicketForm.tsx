@@ -41,10 +41,6 @@ const TicketForm = () => {
     setDate(new Date(value))
   }
 
-  const handleGoHome = () => {
-    router.push('/')
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     const formattedDate = date ? date.toISOString().split('T')[0] : null
@@ -80,7 +76,8 @@ const TicketForm = () => {
       <div className='flex gap-10 items-center'>
         <button 
           className='bg-blue-700 outline-none brdr-50 px-3 py-1 text-white cursor-pointer hover:bg-blue-800 flex shrink-0'
-          onClick={handleGoHome}
+          onClick={() => router.back()}
+          type="button"
         > &lt; </button>
         <h1 className='font-bold text-2xl text-center'>Ticket Forms</h1>
       </div>
@@ -91,9 +88,9 @@ const TicketForm = () => {
           placeholder='Enter name...'
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
           className='border border-solid border-gray-800 outline-none px-2 py-0.5 rounded-sm'
           autoComplete='off'
+          required
         />
       </div>
       <div className='flex flex-col gap-1'>
@@ -103,7 +100,6 @@ const TicketForm = () => {
           placeholder='Enter email...'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required 
           className='border border-solid border-gray-800 outline-none px-2 py-0.5 rounded-sm'
           autoComplete='off'
         />
@@ -115,11 +111,11 @@ const TicketForm = () => {
           onChange={(e) => setEvent(e.target.value)}
         >
           <option value="null">Select Event</option>
-          <option value="software engineering">Software Engineering</option>
-          <option value="data stuff">The Data stuff</option>
-          <option value="low level engineering">Low level engineering</option>
-          <option value="full stack web development">Full stack web development</option>
-          <option value="cybersecurity">Cybersecurity</option>
+          <option value="SOFTWARE ENGINEERING">Software Engineering</option>
+          <option value="DATA STUFF">The Data stuff</option>
+          <option value="LOW LEVEL ENGINEERING">Low level engineering</option>
+          <option value="FULL STACK WEB DEVELOPMENT">Full stack web development</option>
+          <option value="CYBERSECURITY">Cybersecurity</option>
         </select>
       </div>
       <div className='flex flex-col gap-1'>
@@ -128,7 +124,6 @@ const TicketForm = () => {
           type='date'
           value={date ? date.toISOString().split('T')[0] : ''}
           onChange={handleDateChange} 
-          required
           className='border border-solid border-gray-800 py-0.5 px-2 rounded-sm'
           autoComplete='off'
         />
@@ -138,7 +133,6 @@ const TicketForm = () => {
         <input 
           type="time"
           value={time} 
-          required
           onChange={(e) => setTime(e.target.value)}
           className='border border-solid border-gray-800 py-0.5 px-2 rounded-sm'
           autoComplete='off'

@@ -27,3 +27,35 @@ export async function POST(req) {
       )
   }
 }
+
+// change the name so that what we get is the same column names as the database
+export async function GET() {
+  try {
+
+    const query = 'SELECT * FROM ticket'
+    const [results] = await db.query(query)
+
+    const transformedResults = results.map((row: any) => ({
+      id: row.id,
+      eventName: row.event_name,
+      date: row.event_date,
+      time: row.event_time,
+      name: row.attendee_name,
+      email: row.attendee_email
+    }))
+
+    return new Response(
+      JSON.stringify({results: transformedResults, message: 'Fetch: Successful!' }),
+      {
+        status: 200,
+        headers: { 'Content-type': 'application/json'}
+      }
+    )
+
+  } catch(err) {
+    console.error("Error retrieving data: ", err);
+    return new Response(
+      JSON.stringify({ message: 'Data retrieval error', status: 500 })
+    )
+  }
+}
