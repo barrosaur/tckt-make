@@ -43,18 +43,25 @@ const TicketListPage = () => {
 
   return (
     <div className='bg-white w-full h-full flex flex-col justify-center p-10 gap-8'>
-      {tcktList.map((t) => (
-        <Ticket
-          key={t.id}
-          eventName={t.eventName}
-          date={new Date(t.date)}
-          name={t.name}
-          time={t.time}
-          email={t.email}
-          id={t.id}
-          onDelete={() => handleDelete(t.id)}
-        />
-      ))}
+      {
+        tcktList?.length > 0 ? 
+        (tcktList.map((t) => (
+          <Ticket
+            key={t.id}
+            eventName={t.eventName}
+            date={new Date(t.date)}
+            name={t.name}
+            time={t.time}
+            email={t.email}
+            id={t.id}
+            onDelete={() => handleDelete(t.id)}
+          />
+        ))) : (
+          <div className='flex justify-center items-center h-full flex-col'>
+            <h1 className='text-5xl font-bold'>List empty.</h1>
+          </div>
+        ) 
+      }
     </div>
   )
 }
